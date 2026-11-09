@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.fincontrol.DashboardFragment"
+        android:label="Início"
+        tools:layout="@layout/fragment_dashboard" />
+
+    <fragment
+        android:id="@+id/simulatorFragment"
+        android:name="com.example.fincontrol.SimulatorFragment"
+        android:label="Simulador"
+        tools:layout="@layout/fragment_simulator" />
+
+    <fragment
+        android:id="@+id/tipsFragment"
+        android:name="com.example.fincontrol.TipsFragment"
+        android:label="Dicas"
+        tools:layout="@layout/fragment_tips" />
+</navigation>
