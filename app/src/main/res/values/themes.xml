@@ -3,7 +3,18 @@
     <style name="Theme.FinControl" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorOnPrimary">@color/colorOnPrimary</item>
-        <item name="android:windowBackground">@color/colorBackground</item>
         <item name="colorSurface">@color/colorCard</item>
+        <item name="android:windowBackground">@color/colorBackground</item>
+        <item name="bottomSheetDialogTheme">@style/ThemeOverlay.FinControl.BottomSheet</item>
+    </style>
+
+    <style name="ThemeOverlay.FinControl.BottomSheet" parent="ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/Widget.FinControl.BottomSheet</item>
+    </style>
+
+    <!-- Deixa o fundo do sheet transparente: quem desenha é o bottom_sheet_bg (28dp) -->
+    <style name="Widget.FinControl.BottomSheet" parent="Widget.Material3.BottomSheet">
+        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>

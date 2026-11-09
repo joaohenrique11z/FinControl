@@ -1,51 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:paddingBottom="80dp">
+    android:background="@color/colorBackground"
+    android:clipToPadding="false"
+    android:scrollbars="none">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Simulador de Gastos"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:textColor="@color/colorText"
-        android:layout_marginBottom="16dp"/>
-
-    <com.google.android.material.textfield.TextInputLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="12dp">
-        <com.google.android.material.textfield.TextInputEditText
+        android:orientation="vertical"
+        android:paddingStart="16dp"
+        android:paddingTop="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="112dp">
+
+        <TextView
+            style="@style/TextAppearance.FinControl.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:text="Simulador" />
+
+        <!-- Alerta (mostre via Kotlin: visibility = VISIBLE) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_simulator_alert"
+            style="@style/Widget.FinControl.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Valor Investido/Gasto (R$)"
-            android:inputType="numberDecimal" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginBottom="16dp"
+            android:visibility="gone"
+            app:cardBackgroundColor="@color/colorWarning"
+            tools:visibility="visible">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp">
-        <com.google.android.material.textfield.TextInputEditText
+            <TextView
+                android:id="@+id/tv_simulator_alert"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-medium"
+                android:padding="16dp"
+                android:textColor="@color/colorOnPrimary"
+                android:textSize="14sp"
+                tools:text="Atenção: nesse ritmo você estoura o orçamento em março." />
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Gráfico empilhado -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.FinControl.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Meses"
-            android:inputType="number" />
-    </com.google.android.material.textfield.TextInputLayout>
+            android:layout_marginBottom="24dp">
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Simular"
-        android:layout_marginBottom="24dp"/>
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/spending_chart"
+                android:layout_width="match_parent"
+                android:layout_height="280dp"
+                android:padding="16dp" />
+        </com.google.android.material.card.MaterialCardView>
 
-    <com.github.mikephil.charting.charts.BarChart
-        android:id="@+id/spending_chart"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-</LinearLayout>
+        <TextView
+            style="@style/TextAppearance.FinControl.Section"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:text="Detalhamento por mês" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_monthly_breakdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nestedScrollingEnabled="false" />
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

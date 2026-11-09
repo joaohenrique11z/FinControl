@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/colorBackground">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
@@ -18,22 +19,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:menu="@menu/bottom_nav_menu"
+        android:background="@color/colorCard"
+        app:elevation="8dp"
+        app:itemActiveIndicatorStyle="@null"
         app:itemIconTint="@color/nav_color_selector"
         app:itemTextColor="@color/nav_color_selector"
-        android:background="?android:attr/windowBackground"
-        app:elevation="8dp"/>
+        app:labelVisibilityMode="labeled"
+        app:menu="@menu/bottom_nav_menu" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="16dp"
+        android:contentDescription="Adicionar lançamento"
         android:src="@drawable/ic_add"
-        app:tint="@color/colorOnPrimary"
-        app:backgroundTint="@color/primaryColor"
+        app:backgroundTint="@color/primary_bg_selector"
         app:layout_anchor="@id/bottom_navigation"
         app:layout_anchorGravity="top|end"
-        android:layout_marginEnd="16dp"
-        android:contentDescription="Adicionar Lançamento" />
-
+        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.FinControl.Pill"
+        app:tint="@color/colorOnPrimary" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

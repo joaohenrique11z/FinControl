@@ -4,9 +4,14 @@
     <color name="primaryDarkColor">#047857</color>
     <color name="colorBackground">#E9EEF0</color>
     <color name="colorOnPrimary">#FFFFFF</color>
-    <color name="colorText">#1F2937</color>
+    <color name="colorText">#17211D</color>
     <color name="colorTextSecondary">#4B5563</color>
     <color name="colorCard">#FFFFFF</color>
     <color name="colorExpense">#EF4444</color>
     <color name="colorIncome">#10B981</color>
+    <color name="colorBackgroundAlt">#F5F7FA</color>
+    <color name="colorPrimaryContainer">#D1FAE5</color>
+    <color name="colorOutline">#E5E7EB</color>
+    <color name="colorError">#E11D48</color>
+    <color name="colorWarning">#F97316</color>
 </resources>
