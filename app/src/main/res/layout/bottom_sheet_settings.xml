@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_bg"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="24dp"
+    android:paddingBottom="28dp">
+
+    <!-- Indicador de arraste -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorOutline" />
+
+    <!-- Cabeçalho do Menu de Configurações -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="PREFERÊNCIAS"
+        android:textColor="@color/primaryColor"
+        android:textSize="10sp"
+        android:letterSpacing="0.1" />
+
+    <TextView
+        style="@style/TextAppearance.FinControl.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="18dp"
+        android:text="Configurações do App" />
+
+    <!-- Seção Modo Escuro (Dark Mode) -->
+    <com.google.android.material.card.MaterialCardView
+        style="@style/Widget.FinControl.Card"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        app:cardBackgroundColor="@color/colorBackgroundAlt">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="14dp">
+
+            <FrameLayout
+                android:layout_width="38dp"
+                android:layout_height="38dp"
+                android:background="@drawable/bg_square_tip">
+
+                <TextView
+                    android:id="@+id/tv_dark_mode_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="🌙"
+                    android:textSize="18sp" />
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-bold"
+                    android:text="Modo Escuro"
+                    android:textColor="@color/colorText"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:fontFamily="sans-serif"
+                    android:text="Alternar entre tema Claro e Escuro"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:id="@+id/switch_dark_mode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Campo: Limite Mensal de Gastos (Budget) -->
+    <TextView
+        style="@style/TextAppearance.FinControl.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="Gestão de Limite Mensal (Budget)" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.FinControl.TextInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        android:hint="Limite Mensal"
+        app:helperText="Define o valor máximo desejado no termômetro do dashboard"
+        app:prefixText="R$ ">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_settings_budget"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-bold"
+            android:inputType="numberDecimal"
+            android:textSize="16sp"
+            tools:text="1200,00" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Campo: Salário Mensal Base -->
+    <TextView
+        style="@style/TextAppearance.FinControl.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp"
+        android:text="Entradas / Salário Mensal" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.FinControl.TextInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="Salário Mensal"
+        app:helperText="Utilizado para calcular o Saldo Livre disponível"
+        app:prefixText="R$ ">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_settings_salary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-bold"
+            android:inputType="numberDecimal"
+            android:textSize="16sp"
+            tools:text="2500,00" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Mensagem de Erro / Validação -->
+    <TextView
+        android:id="@+id/tv_settings_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="@color/colorError"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:text="Insira valores válidos para o limite e salário." />
+
+    <!-- Botão Salvar Configurações -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_save_settings"
+        style="@style/Widget.FinControl.Button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="8dp"
+        android:text="Salvar Configurações" />
+
+    <!-- Botão Restaurar Dados Padrão -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_reset_defaults"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="44dp"
+        android:layout_marginTop="4dp"
+        android:text="Restaurar dados iniciais do protótipo"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="12sp" />
+
+</LinearLayout>

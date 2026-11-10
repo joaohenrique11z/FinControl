@@ -43,4 +43,7 @@ dependencies {
     
     // MPAndroidChart
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+    // Testes Unitários
+    testImplementation("junit:junit:4.13.2")
 }

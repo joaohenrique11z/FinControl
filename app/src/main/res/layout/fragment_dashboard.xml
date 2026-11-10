@@ -16,49 +16,109 @@
         android:paddingStart="16dp"
         android:paddingTop="16dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="112dp">
+        android:paddingBottom="120dp">
 
-        <!-- Saldo Livre -->
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.FinControl.Card"
+        <!-- Top Header Bar (FinControl + Mês Atual) -->
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            app:cardBackgroundColor="@color/primaryColor">
+            android:layout_marginBottom="16dp">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="24dp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <TextView
+                <FrameLayout
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_square_tip">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="🏛️"
+                        android:textSize="18sp" />
+                </FrameLayout>
+
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="sans-serif-medium"
-                    android:text="Saldo livre"
-                    android:textColor="@color/colorPrimaryContainer"
-                    android:textSize="14sp" />
+                    android:layout_marginStart="10dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_saldo_livre"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:fontFamily="sans-serif-black"
-                    android:text="R$ 0,00"
-                    android:textColor="@color/colorOnPrimary"
-                    android:textSize="34sp"
-                    tools:text="R$ 2.450,00" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:text="FINCONTROL"
+                        android:textColor="@color/primaryColor"
+                        android:textSize="10sp"
+                        android:letterSpacing="0.1" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="Início"
+                        android:textColor="@color/colorText"
+                        android:textSize="16sp" />
+                </LinearLayout>
             </LinearLayout>
-        </com.google.android.material.card.MaterialCardView>
 
-        <!-- Entradas e Saídas + termômetro -->
+            <!-- Ações do Cabeçalho: Mês e Configurações -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <!-- Badge do Mês Atual -->
+                <TextView
+                    android:id="@+id/tv_header_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_month_badge"
+                    android:fontFamily="sans-serif-bold"
+                    android:paddingStart="12dp"
+                    android:paddingTop="6dp"
+                    android:paddingEnd="12dp"
+                    android:paddingBottom="6dp"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textSize="12sp"
+                    tools:text="Janeiro" />
+
+                <!-- Botão de Configurações -->
+                <FrameLayout
+                    android:id="@+id/btn_settings"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginStart="8dp"
+                    android:background="@drawable/bg_month_badge"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="⚙️"
+                        android:textSize="15sp" />
+                </FrameLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <!-- Card Saldo Livre Atual (Gradient / Sombra) -->
         <com.google.android.material.card.MaterialCardView
             style="@style/Widget.FinControl.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="14dp"
+            app:cardBackgroundColor="@color/primaryColor">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -66,111 +126,288 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="SALDO LIVRE ATUAL"
+                            android:textColor="#D1FAE5"
+                            android:textSize="11sp"
+                            android:letterSpacing="0.08" />
+
+                        <TextView
+                            android:id="@+id/tv_saldo_livre"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="4dp"
+                            android:fontFamily="sans-serif-black"
+                            android:text="R$ 1.066,00"
+                            android:textColor="@color/colorOnPrimary"
+                            android:textSize="30sp"
+                            tools:text="R$ 1.066,00" />
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="38dp"
+                        android:layout_height="38dp"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/bg_circle_translucent">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="📈"
+                            android:textSize="16sp" />
+                    </FrameLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="▲ Seu dinheiro, sob controle"
+                    android:textColor="#ECFDF5"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Cards Entradas e Saídas (Grid 2 colunas) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="14dp"
+            android:orientation="horizontal">
+
+            <!-- Card Entradas -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.FinControl.Card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="6dp"
+                android:layout_weight="1">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            style="@style/TextAppearance.FinControl.Label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Entradas" />
-
-                        <TextView
-                            android:id="@+id/tv_entrada_salario"
-                            style="@style/TextAppearance.FinControl.Value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textColor="@color/colorIncome"
-                            tools:text="R$ 5.000,00" />
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="1dp"
-                        android:layout_height="match_parent"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="16dp"
-                        android:background="@color/colorOutline" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            style="@style/TextAppearance.FinControl.Label"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Saídas" />
-
-                        <TextView
-                            android:id="@+id/tv_saida_mes"
-                            style="@style/TextAppearance.FinControl.Value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="2dp"
-                            android:textColor="@color/colorExpense"
-                            tools:text="R$ 2.550,00" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!-- Termômetro do budget -->
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp">
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <TextView
-                        style="@style/TextAppearance.FinControl.Label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Termômetro do budget" />
+                        android:fontFamily="sans-serif-bold"
+                        android:text="▲ Entradas"
+                        android:textColor="@color/colorIncome"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_entrada_salario"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="sans-serif-black"
+                        android:text="R$ 2.500,00"
+                        android:textColor="@color/colorText"
+                        android:textSize="16sp"
+                        tools:text="R$ 2.500,00" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="sans-serif"
+                        android:text="Salário mensal"
+                        android:textColor="@color/colorTextSecondary"
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Card Saídas -->
+            <com.google.android.material.card.MaterialCardView
+                style="@style/Widget.FinControl.Card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_weight="1">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="▼ Saídas"
+                        android:textColor="@color/colorExpense"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tv_saida_mes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:fontFamily="sans-serif-black"
+                        android:text="R$ 1.434,00"
+                        android:textColor="@color/colorExpense"
+                        android:textSize="16sp"
+                        tools:text="R$ 1.434,00" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="sans-serif"
+                        android:text="Neste mês"
+                        android:textColor="@color/colorTextSecondary"
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+        </LinearLayout>
+
+        <!-- Card Termômetro do Budget (Clique para gerenciar limite) -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_budget"
+            style="@style/Widget.FinControl.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="22dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-bold"
+                            android:text="Termômetro do budget"
+                            android:textColor="@color/colorText"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tv_budget_label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="2dp"
+                            android:fontFamily="sans-serif"
+                            android:text="Limite mensal R$ 1.200,00"
+                            android:textColor="@color/colorTextSecondary"
+                            android:textSize="10sp" />
+                    </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_budget_percent"
-                        style="@style/TextAppearance.FinControl.Label"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
-                        android:textColor="@color/colorText"
-                        tools:text="51%" />
+                        android:layout_centerVertical="true"
+                        android:fontFamily="sans-serif-black"
+                        android:textColor="@color/colorExpense"
+                        android:textSize="14sp"
+                        tools:text="120%" />
                 </RelativeLayout>
 
+                <!-- Barra de Progresso do Budget -->
                 <ProgressBar
                     android:id="@+id/progress_budget"
                     style="?android:attr/progressBarStyleHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="12dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_height="10dp"
+                    android:layout_marginTop="10dp"
                     android:indeterminate="false"
                     android:max="100"
-                    android:progress="51"
-                    android:progressDrawable="@drawable/progress_budget" />
+                    android:progress="100"
+                    android:progressDrawable="@drawable/progress_budget_over" />
+
+                <!-- Mensagem de Alerta ou Folga do Budget -->
+                <TextView
+                    android:id="@+id/tv_budget_message"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:fontFamily="sans-serif-bold"
+                    android:textColor="@color/colorExpense"
+                    android:textSize="11sp"
+                    tools:text="Acima do Budget (+R$ 234,00)" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <TextView
-            style="@style/TextAppearance.FinControl.Section"
-            android:layout_width="wrap_content"
+        <!-- Cabeçalho da Seção Transações Recentes -->
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="Transações recentes" />
+            android:layout_marginBottom="12dp">
 
+            <TextView
+                style="@style/TextAppearance.FinControl.Section"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif-black"
+                android:text="Transações Recentes"
+                android:textColor="@color/colorText"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/tv_transaction_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:fontFamily="sans-serif"
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="11sp"
+                tools:text="5 lançamentos" />
+        </RelativeLayout>
+
+        <!-- Lista Recycler View -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_recent_transactions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
-            tools:itemCount="4"
+            tools:itemCount="5"
             tools:listitem="@layout/item_transaction" />
+
+        <!-- Estado vazio caso não haja transações -->
+        <TextView
+            android:id="@+id/tv_empty_transactions"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/bg_month_badge"
+            android:gravity="center"
+            android:padding="20dp"
+            android:text="Nenhum gasto lançado neste mês."
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="12sp"
+            android:visibility="gone" />
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

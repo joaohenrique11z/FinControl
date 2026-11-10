@@ -1,36 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="12dp"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
-    app:cardBackgroundColor="@color/colorCard">
+    app:cardBackgroundColor="@color/colorCard"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp"
+    app:strokeColor="@color/colorOutline"
+    app:strokeWidth="1dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="horizontal"
+        android:padding="12dp">
 
-        <TextView
-            android:id="@+id/tv_tip_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/primaryColor"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:layout_marginBottom="8dp"
-            tools:text="Reserva de Emergência" />
+        <!-- Ícone / Quadrado estilizado -->
+        <FrameLayout
+            android:id="@+id/container_tip_icon"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:background="@drawable/bg_square_tip">
 
-        <TextView
-            android:id="@+id/tv_tip_desc"
-            android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/tv_tip_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="sans-serif-bold"
+                android:textSize="22sp"
+                tools:text="💡" />
+        </FrameLayout>
+
+        <!-- Conteúdo textual da dica -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorTextSecondary"
-            android:textSize="14sp"
-            tools:text="Guarde o equivalente a 6 meses dos seus custos fixos." />
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <!-- Tag e tempo -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_tip_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-bold"
+                    android:paddingStart="6dp"
+                    android:paddingTop="2dp"
+                    android:paddingEnd="6dp"
+                    android:paddingBottom="2dp"
+                    android:textSize="9sp"
+                    tools:background="#D1FAE5"
+                    tools:text="DICA"
+                    tools:textColor="#065F46" />
+
+                <TextView
+                    android:id="@+id/tv_tip_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="end"
+                    android:fontFamily="sans-serif"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textSize="10sp"
+                    tools:text="há 2 horas" />
+            </LinearLayout>
+
+            <!-- Título -->
+            <TextView
+                android:id="@+id/tv_tip_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-bold"
+                android:textColor="@color/colorText"
+                android:textSize="13sp"
+                tools:text="Regra 50-30-20: como dividir seu salário" />
+
+            <!-- Resumo -->
+            <TextView
+                android:id="@+id/tv_tip_desc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:ellipsize="end"
+                android:fontFamily="sans-serif"
+                android:maxLines="2"
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="11sp"
+                tools:text="Organize sua renda entre necessidades, desejos e planos para o futuro." />
+
+            <!-- Fonte -->
+            <TextView
+                android:id="@+id/tv_tip_source"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="sans-serif-medium"
+                android:textColor="#9CA3AF"
+                android:textSize="10sp"
+                tools:text="Vida Financeira" />
+        </LinearLayout>
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

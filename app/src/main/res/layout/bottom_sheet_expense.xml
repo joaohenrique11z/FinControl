@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_sheet_bg"
@@ -9,8 +10,9 @@
     android:paddingStart="24dp"
     android:paddingTop="16dp"
     android:paddingEnd="24dp"
-    android:paddingBottom="24dp">
+    android:paddingBottom="28dp">
 
+    <!-- Indicador de arraste -->
     <View
         android:layout_width="40dp"
         android:layout_height="4dp"
@@ -18,42 +20,61 @@
         android:layout_marginBottom="16dp"
         android:background="@color/colorOutline" />
 
+    <!-- Título do Sheet -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="NOVO LANÇAMENTO"
+        android:textColor="@color/primaryColor"
+        android:textSize="10sp"
+        android:letterSpacing="0.1" />
+
     <TextView
         style="@style/TextAppearance.FinControl.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
         android:layout_marginBottom="16dp"
-        android:text="Registrar gasto rápido" />
+        android:text="Gasto rápido" />
 
+    <!-- Campo Valor -->
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.FinControl.TextInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="12dp"
-        android:hint="Valor (R$)"
+        android:hint="Valor"
         app:prefixText="R$ ">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/expense_value"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="numberDecimal" />
+            android:fontFamily="sans-serif-bold"
+            android:inputType="numberDecimal"
+            android:textSize="18sp"
+            tools:text="150,00" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Campo Descrição -->
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.FinControl.TextInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="16dp"
         android:hint="Descrição">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/expense_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textCapSentences" />
+            android:inputType="textCapSentences"
+            android:maxLength="45"
+            tools:text="Supermercado mensal" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Categoria (Opções Expandidas) -->
     <TextView
         style="@style/TextAppearance.FinControl.Label"
         android:layout_width="wrap_content"
@@ -61,46 +82,108 @@
         android:layout_marginBottom="8dp"
         android:text="Categoria" />
 
-    <com.google.android.material.chip.ChipGroup
-        android:id="@+id/chip_group_category"
+    <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        app:selectionRequired="true"
-        app:singleSelection="true">
+        android:layout_marginBottom="16dp"
+        android:scrollbars="none">
 
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.FinControl.Chip"
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/chip_group_category"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checked="true"
-            android:text="Fixo" />
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true">
 
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.FinControl.Chip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Lazer" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_fixo"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="Fixo" />
 
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.FinControl.Chip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Alimentação" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_alimentacao"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alimentação" />
 
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.FinControl.Chip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Transporte" />
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_lazer"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lazer" />
 
-        <com.google.android.material.chip.Chip
-            style="@style/Widget.FinControl.Chip"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Moradia" />
-    </com.google.android.material.chip.ChipGroup>
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_viagem"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Viagem" />
 
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_imprevisto"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Imprevisto" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_moradia"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Moradia" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_saude"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Saúde" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_educacao"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Educação" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_transporte"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transporte" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_investimento"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Investimento" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_presente"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Presente" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_outros"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Outros" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <!-- Parcelas (Opções Expandidas: 1x a 24x) -->
     <TextView
         style="@style/TextAppearance.FinControl.Label"
         android:layout_width="wrap_content"
@@ -111,7 +194,7 @@
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="16dp"
         android:scrollbars="none">
 
         <com.google.android.material.chip.ChipGroup
@@ -123,48 +206,114 @@
             app:singleSelection="true">
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_parc_1"
                 style="@style/Widget.FinControl.Chip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-                android:text="1x" />
+                android:text="1x · à vista" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_parc_2"
                 style="@style/Widget.FinControl.Chip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="2x" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_parc_3"
                 style="@style/Widget.FinControl.Chip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="3x" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_parc_4"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="4x" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_parc_5"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5x" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_parc_6"
                 style="@style/Widget.FinControl.Chip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="6x" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_parc_10"
                 style="@style/Widget.FinControl.Chip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="10x" />
 
             <com.google.android.material.chip.Chip
+                android:id="@+id/chip_parc_12"
                 style="@style/Widget.FinControl.Chip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="12x" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_parc_18"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="18x" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_parc_24"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="24x" />
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
 
+    <!-- Mês Inicial (12 meses do ano) -->
+    <TextView
+        style="@style/TextAppearance.FinControl.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Mês inicial do lançamento" />
+
+    <Spinner
+        android:id="@+id/spinner_expense_month"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_month_badge"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp" />
+
+    <!-- Mensagem de erro -->
+    <TextView
+        android:id="@+id/tv_expense_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="#FFE4E6"
+        android:fontFamily="sans-serif-medium"
+        android:padding="10dp"
+        android:textColor="#E11D48"
+        android:textSize="11sp"
+        android:visibility="gone"
+        tools:text="Informe um valor maior que zero." />
+
+    <!-- Botão Salvar -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btn_save_expense"
         style="@style/Widget.FinControl.Button"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:text="Salvar lançamento" />
+        android:layout_height="54dp"
+        android:text="Salvar gasto" />
 </LinearLayout>

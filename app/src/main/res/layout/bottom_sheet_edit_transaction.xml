@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bottom_sheet_bg"
+    android:orientation="vertical"
+    android:paddingStart="24dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="24dp"
+    android:paddingBottom="28dp">
+
+    <!-- Indicador de arraste -->
+    <View
+        android:layout_width="40dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="@color/colorOutline" />
+
+    <!-- Título do Sheet -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-black"
+        android:text="EDITAR LANÇAMENTO"
+        android:textColor="@color/primaryColor"
+        android:textSize="10sp"
+        android:letterSpacing="0.1" />
+
+    <TextView
+        style="@style/TextAppearance.FinControl.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="16dp"
+        android:text="Alterar detalhes" />
+
+    <!-- Campo Valor -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.FinControl.TextInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:hint="Valor"
+        app:prefixText="R$ ">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_expense_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-bold"
+            android:inputType="numberDecimal"
+            android:textSize="18sp"
+            tools:text="100,00" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Campo Descrição -->
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.FinControl.TextInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:hint="Descrição">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/edit_expense_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapSentences"
+            android:maxLength="45"
+            tools:text="Presente de aniversário" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Categoria -->
+    <TextView
+        style="@style/TextAppearance.FinControl.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Categoria" />
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:scrollbars="none">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/edit_chip_group_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:selectionRequired="true"
+            app:singleLine="true"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/edit_chip_cat_fixo"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fixo" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/edit_chip_cat_alimentacao"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Alimentação" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/edit_chip_cat_lazer"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lazer" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/edit_chip_cat_viagem"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Viagem" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/edit_chip_cat_imprevisto"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Imprevisto" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/edit_chip_cat_moradia"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Moradia" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/edit_chip_cat_saude"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Saúde" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/edit_chip_cat_educacao"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Educação" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/edit_chip_cat_transporte"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Transporte" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/edit_chip_cat_investimento"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Investimento" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/edit_chip_cat_presente"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Presente" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/edit_chip_cat_outros"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Outros" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <!-- Mês do Lançamento -->
+    <TextView
+        style="@style/TextAppearance.FinControl.Label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Mês do lançamento" />
+
+    <Spinner
+        android:id="@+id/edit_spinner_month"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginBottom="16dp"
+        android:background="@drawable/bg_month_badge"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp" />
+
+    <!-- Mensagem de erro -->
+    <TextView
+        android:id="@+id/tv_edit_expense_error"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        android:background="#FFE4E6"
+        android:fontFamily="sans-serif-medium"
+        android:padding="10dp"
+        android:textColor="#E11D48"
+        android:textSize="11sp"
+        android:visibility="gone"
+        tools:text="Informe um valor maior que zero." />
+
+    <!-- Botão Salvar Alterações -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_update_expense"
+        style="@style/Widget.FinControl.Button"
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:text="Salvar alterações" />
+
+    <!-- Botão Excluir Transação -->
+    <Button
+        android:id="@+id/btn_delete_expense"
+        style="@style/Widget.Material3.Button.TextButton"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="6dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="Excluir este lançamento"
+        android:textColor="#E11D48"
+        android:textSize="13sp" />
+</LinearLayout>

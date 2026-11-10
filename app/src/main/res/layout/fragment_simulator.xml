@@ -16,62 +16,432 @@
         android:paddingStart="16dp"
         android:paddingTop="16dp"
         android:paddingEnd="16dp"
-        android:paddingBottom="112dp">
+        android:paddingBottom="120dp">
+
+        <!-- Cabeçalho da tela -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-bold"
+            android:text="PLANEJE ANTES DE COMPRAR"
+            android:textColor="@color/primaryColor"
+            android:textSize="10sp"
+            android:letterSpacing="0.1" />
 
         <TextView
             style="@style/TextAppearance.FinControl.Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:text="Simulador" />
-
-        <!-- Alerta (mostre via Kotlin: visibility = VISIBLE) -->
-        <com.google.android.material.card.MaterialCardView
-            android:id="@+id/card_simulator_alert"
-            style="@style/Widget.FinControl.Card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:visibility="gone"
-            app:cardBackgroundColor="@color/colorWarning"
-            tools:visibility="visible">
-
-            <TextView
-                android:id="@+id/tv_simulator_alert"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:padding="16dp"
-                android:textColor="@color/colorOnPrimary"
-                android:textSize="14sp"
-                tools:text="Atenção: nesse ritmo você estoura o orçamento em março." />
-        </com.google.android.material.card.MaterialCardView>
-
-        <!-- Gráfico empilhado -->
-        <com.google.android.material.card.MaterialCardView
-            style="@style/Widget.FinControl.Card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="24dp">
-
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/spending_chart"
-                android:layout_width="match_parent"
-                android:layout_height="280dp"
-                android:padding="16dp" />
-        </com.google.android.material.card.MaterialCardView>
+            android:layout_marginTop="2dp"
+            android:text="Posso Comprar?"
+            android:textSize="22sp" />
 
         <TextView
-            style="@style/TextAppearance.FinControl.Section"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="12dp"
-            android:text="Detalhamento por mês" />
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="16dp"
+            android:fontFamily="sans-serif"
+            android:text="Veja como uma compra parcelada impacta os próximos meses"
+            android:textColor="@color/colorTextSecondary"
+            android:textSize="12sp" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_monthly_breakdown"
+        <!-- Card da Projeção Mensal com Gráfico -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.FinControl.Card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false" />
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="Projeção mensal"
+                        android:textColor="@color/colorText"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="🔴 Acima do budget"
+                        android:textColor="@color/colorExpense"
+                        android:textSize="10sp" />
+                </RelativeLayout>
+
+                <!-- Gráfico de Gastos / Projeção -->
+                <com.github.mikephil.charting.charts.BarChart
+                    android:id="@+id/spending_chart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginTop="8dp" />
+
+                <!-- Legenda do Gráfico -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif"
+                        android:text="🟩 Gasto registrado"
+                        android:textColor="@color/colorTextSecondary"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="sans-serif"
+                        android:text="🟪 Parcela simulada"
+                        android:textColor="@color/colorTextSecondary"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="12dp"
+                        android:fontFamily="sans-serif"
+                        android:text="― Budget"
+                        android:textColor="@color/colorExpense"
+                        android:textSize="10sp" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Card Formulário: Simule uma Compra -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.FinControl.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="Simule uma compra"
+                        android:textColor="@color/colorText"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:background="@drawable/bg_month_badge"
+                        android:fontFamily="sans-serif-black"
+                        android:paddingStart="8dp"
+                        android:paddingTop="2dp"
+                        android:paddingEnd="8dp"
+                        android:paddingBottom="2dp"
+                        android:text="PROJEÇÃO"
+                        android:textColor="#4F46E5"
+                        android:textSize="9sp" />
+                </RelativeLayout>
+
+                <!-- Campo Item -->
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.FinControl.TextInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:hint="Item">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/et_sim_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="textCapWords"
+                        android:text="Tênis" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <!-- Linha Valor Total e Parcelas -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        style="@style/Widget.FinControl.TextInput"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="6dp"
+                        android:layout_weight="1"
+                        android:hint="Valor total"
+                        app:prefixText="R$ ">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/et_sim_total"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:text="400,00" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="6dp"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            style="@style/TextAppearance.FinControl.Label"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="4dp"
+                            android:text="Parcelas" />
+
+                        <Spinner
+                            android:id="@+id/spinner_sim_installments"
+                            android:layout_width="match_parent"
+                            android:layout_height="56dp"
+                            android:background="@drawable/bg_month_badge"
+                            android:paddingStart="12dp"
+                            android:paddingEnd="12dp" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!-- Mês Inicial -->
+                <TextView
+                    style="@style/TextAppearance.FinControl.Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="Mês inicial" />
+
+                <Spinner
+                    android:id="@+id/spinner_sim_month"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="12dp"
+                    android:background="@drawable/bg_month_badge"
+                    android:paddingStart="12dp"
+                    android:paddingEnd="12dp" />
+
+                <!-- Mensagem de Erro da Simulação -->
+                <TextView
+                    android:id="@+id/tv_sim_error"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:background="#FFE4E6"
+                    android:fontFamily="sans-serif-medium"
+                    android:padding="8dp"
+                    android:textColor="#E11D48"
+                    android:textSize="11sp"
+                    android:visibility="gone"
+                    tools:text="Informe um valor maior que zero." />
+
+                <!-- Botões de Ação -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_simulate"
+                    style="@style/Widget.FinControl.Button"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:text="Simular compra" />
+
+                <Button
+                    android:id="@+id/btn_clear_simulation"
+                    style="@style/Widget.Material3.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="4dp"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Limpar simulação"
+                    android:textColor="@color/colorTextSecondary"
+                    android:textSize="12sp" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Card de Veredito ("Posso Comprar?") -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/card_verdict"
+            style="@style/Widget.FinControl.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            app:cardBackgroundColor="#ECFDF5"
+            app:strokeColor="#A7F3D0"
+            app:strokeWidth="1dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <FrameLayout
+                    android:id="@+id/container_verdict_icon"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:background="@drawable/bg_circle_category">
+
+                    <TextView
+                        android:id="@+id/tv_verdict_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="✓"
+                        android:textColor="#065F46"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_verdict_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-black"
+                        android:text="VEREDITO"
+                        android:textColor="#059669"
+                        android:textSize="10sp"
+                        android:letterSpacing="0.1" />
+
+                    <TextView
+                        android:id="@+id/tv_verdict_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="Pode comprar! Seu orçamento aguenta."
+                        android:textColor="#064E3B"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tv_verdict_details"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:fontFamily="sans-serif"
+                        android:textColor="#374151"
+                        android:textSize="11sp"
+                        android:visibility="gone"
+                        tools:text="Fev: +R$ 145,00" />
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
+        <!-- Card Detalhamento por Mês (Tabela) -->
+        <com.google.android.material.card.MaterialCardView
+            style="@style/Widget.FinControl.Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:fontFamily="sans-serif-bold"
+                    android:text="Detalhamento por mês"
+                    android:textColor="@color/colorText"
+                    android:textSize="13sp" />
+
+                <!-- Cabeçalho da Tabela -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#F9FAFB"
+                    android:orientation="horizontal"
+                    android:paddingStart="8dp"
+                    android:paddingTop="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingBottom="8dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="Mês"
+                        android:textColor="#9CA3AF"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.6"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="Gasto"
+                        android:textColor="#9CA3AF"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.5"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="Parcela"
+                        android:textColor="#9CA3AF"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1.7"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="Total"
+                        android:textColor="#9CA3AF"
+                        android:textSize="10sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="sans-serif-bold"
+                        android:text="Status"
+                        android:textColor="#9CA3AF"
+                        android:textSize="10sp" />
+                </LinearLayout>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_monthly_breakdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
+                    tools:itemCount="6"
+                    tools:listitem="@layout/item_monthly_breakdown" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

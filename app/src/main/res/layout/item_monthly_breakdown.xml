@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingStart="8dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="8dp"
+    android:paddingBottom="10dp">
+
+    <!-- Mês -->
+    <TextView
+        android:id="@+id/tv_row_month"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:fontFamily="sans-serif-bold"
+        android:textColor="@color/colorText"
+        android:textSize="12sp"
+        tools:text="Jan" />
+
+    <!-- Gasto -->
+    <TextView
+        android:id="@+id/tv_row_expense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.6"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="11sp"
+        tools:text="R$ 1.434,00" />
+
+    <!-- Parcela -->
+    <TextView
+        android:id="@+id/tv_row_installment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.5"
+        android:fontFamily="sans-serif"
+        android:textColor="#4F46E5"
+        android:textSize="11sp"
+        tools:text="R$ 100,00" />
+
+    <!-- Total -->
+    <TextView
+        android:id="@+id/tv_row_total"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.7"
+        android:fontFamily="sans-serif-bold"
+        android:textColor="@color/colorText"
+        android:textSize="11sp"
+        tools:text="R$ 1.534,00" />
+
+    <!-- Status Badge -->
+    <TextView
+        android:id="@+id/tv_row_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-bold"
+        android:paddingStart="6dp"
+        android:paddingTop="2dp"
+        android:paddingEnd="6dp"
+        android:paddingBottom="2dp"
+        android:textSize="9sp"
+        tools:background="#FEF3C7"
+        tools:text="ALERTA"
+        tools:textColor="#B45309" />
+</LinearLayout>
