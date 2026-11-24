@@ -87,12 +87,16 @@ class TipsFragment : Fragment(R.layout.fragment_tips) {
     }
 
     private fun abrirDetalhesOuLink(tip: Tip) {
-        if (!tip.url.isNullOrEmpty()) {
+        val urlStr = tip.url?.trim()
+        val urlValida = !urlStr.isNullOrEmpty() &&
+                (urlStr.startsWith("http://", ignoreCase = true) || urlStr.startsWith("https://", ignoreCase = true))
+
+        if (urlValida) {
             try {
-                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(tip.url))
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(urlStr))
                 startActivity(browserIntent)
             } catch (e: Exception) {
-                Toast.makeText(requireContext(), "Não foi possível abrir o link externo.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Não foi possível abrir o link da matéria.", Toast.LENGTH_SHORT).show()
             }
         } else {
             AlertDialog.Builder(requireContext())

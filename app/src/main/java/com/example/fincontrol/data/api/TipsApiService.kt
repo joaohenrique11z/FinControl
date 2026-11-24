@@ -3,21 +3,25 @@ package com.example.fincontrol.data.api
 import com.example.fincontrol.data.model.Tip
 import org.json.JSONArray
 import org.json.JSONObject
+import org.xmlpull.v1.XmlPullParser
+import org.xmlpull.v1.XmlPullParserFactory
 import java.io.BufferedReader
 import java.io.InputStreamReader
+import java.io.StringReader
 import java.net.HttpURLConnection
 import java.net.URL
 import java.text.NumberFormat
 import java.util.Locale
 
 /**
- * Serviço de Conexão com APIs Públicas de Finanças e Economia em Tempo Real.
+ * Serviço de Conexão com APIs Públicas e Feeds de Notícias Financeiras em Tempo Real.
  *
- * Conecta-se às APIs gratuitas e oficiais:
- * 1. AwesomeAPI (Economia & Câmbio): cotações atualizadas de Dólar (USD), Euro (EUR) e Bitcoin (BTC).
- * 2. BrasilAPI (Taxas Macroeconômicas): indicadores de Taxa Selic, CDI e IPCA.
+ * Conecta-se a:
+ * 1. Feeds RSS de Notícias Econômicas (G1 Economia / Google News Economia) para matérias e artigos completos.
+ * 2. AwesomeAPI (Economia & Câmbio): cotações atualizadas de Dólar (USD), Euro (EUR) e Bitcoin (BTC).
+ * 3. BrasilAPI (Taxas Macroeconômicas): indicadores de Taxa Selic e IPCA.
  *
- * Fornece fallback transparente com as dicas educativas recomendadas caso não haja conexão à internet.
+ * Fornece fallback transparente com links reais para portais de educação financeira.
  */
 object TipsApiService {
 
@@ -26,12 +30,21 @@ object TipsApiService {
     private const val TIMEOUT_MS = 6000
 
     /**
-     * Carrega as dicas dinamicamente combinando cotações e taxas reais com dicas educativas de apoio.
+     * Carrega as dicas dinamicamente combinando notícias de economia, cotações e taxas reais
+     * com matérias educativas de apoio.
      */
     fun carregarDicasComApi(): List<Tip> {
         val listaDicas = mutableListOf<Tip>()
 
-        // 1. Tenta carregar cotações cambiais (AwesomeAPI)
+        // 1. Tenta carregar notícias recentes do feed RSS (G1 Economia / Google News)
+        try {
+            val noticiasRss = carregarNoticiasRss()
+            listaDicas.addAll(noticiasRss)
+        } catch (e: Exception) {
+            // Se falhar o RSS, prossegue para as cotações
+        }
+
+        // 2. Tenta carregar cotações cambiais (AwesomeAPI) com links para dados oficiais
         try {
             val jsonCotas = fazerRequisicaoHttp(URL_AWESOME_API)
             if (jsonCotas.isNotEmpty()) {
@@ -48,12 +61,12 @@ object TipsApiService {
                         Tip(
                             titulo = "Dólar Comercial: R$ ${String.format(Locale("pt", "BR"), "%.2f", bid)} ($sinalPct)",
                             resumo = "Mercado Cambial: O dólar opera hoje a R$ ${String.format(Locale("pt", "BR"), "%.2f", bid)}. Ideal para planejar compras internacionais ou aportes em reserva cambial.",
-                            fonte = "AwesomeAPI • Câmbio em Tempo Real",
+                            fonte = "Banco Central do Brasil • Câmbio",
                             tempo = "Agora",
                             tag = "Câmbio",
                             corTagHex = "emerald",
                             icone = "💲",
-                            url = "https://economia.awesomeapi.com.br"
+                            url = "https://www.bcb.gov.br/estabilidadefinanceira/cambio"
                         )
                     )
                 }
@@ -69,12 +82,12 @@ object TipsApiService {
                         Tip(
                             titulo = "Euro: R$ ${String.format(Locale("pt", "BR"), "%.2f", bid)} ($sinalPct)",
                             resumo = "Planejamento de Viagem: Cotação da moeda europeia em tempo real para reservas e remessas.",
-                            fonte = "AwesomeAPI • Câmbio Europeu",
+                            fonte = "Banco Central do Brasil • Câmbio",
                             tempo = "Agora",
                             tag = "Câmbio",
                             corTagHex = "sky",
                             icone = "💶",
-                            url = "https://economia.awesomeapi.com.br"
+                            url = "https://www.bcb.gov.br/estabilidadefinanceira/cambio"
                         )
                     )
                 }
@@ -89,21 +102,21 @@ object TipsApiService {
                         Tip(
                             titulo = "Bitcoin (BTC): $bidFormatado",
                             resumo = "Criptoativos: Alta volatilidade no mercado cripto. Mantenha cautela e limite sua exposição a uma parcela prudente do seu patrimônio.",
-                            fonte = "Mercado Cripto • Tempo Real",
+                            fonte = "CoinMarketCap • Mercado Cripto",
                             tempo = "Agora",
                             tag = "Investimento",
                             corTagHex = "amber",
                             icone = "₿",
-                            url = "https://economia.awesomeapi.com.br"
+                            url = "https://coinmarketcap.com/currencies/bitcoin/"
                         )
                     )
                 }
             }
         } catch (e: Exception) {
-            // Em caso de erro na AwesomeAPI, prossegue para as outras fontes
+            // Em caso de erro na AwesomeAPI, prossegue
         }
 
-        // 2. Tenta carregar taxas econômicas do Brasil (BrasilAPI)
+        // 3. Tenta carregar taxas econômicas do Brasil (BrasilAPI) com links para os órgãos oficiais
         try {
             val jsonTaxas = fazerRequisicaoHttp(URL_BRASIL_API_TAXAS)
             if (jsonTaxas.isNotEmpty()) {
@@ -118,12 +131,12 @@ object TipsApiService {
                             Tip(
                                 titulo = "Taxa Selic Hoje: $valor% ao ano",
                                 resumo = "A taxa básica de juros do Banco Central influencia os rendimentos de Renda Fixa (Tesouro Selic e CDBs) e o custo de empréstimos.",
-                                fonte = "Banco Central • BrasilAPI",
+                                fonte = "Banco Central do Brasil • Selic",
                                 tempo = "Oficial",
                                 tag = "Renda Fixa",
                                 corTagHex = "violet",
                                 icone = "🏛️",
-                                url = "https://brasilapi.com.br"
+                                url = "https://www.bcb.gov.br/controleinflacao/taxaselic"
                             )
                         )
                     } else if (nome.equals("IPCA", ignoreCase = true)) {
@@ -131,12 +144,12 @@ object TipsApiService {
                             Tip(
                                 titulo = "Inflação IPCA Acumulada: $valor%",
                                 resumo = "Mede a inflação oficial do país. Busque proteger o seu poder de compra com investimentos indexados a IPCA + juros reais.",
-                                fonte = "IBGE • BrasilAPI",
+                                fonte = "IBGE • Indicadores de Inflação",
                                 tempo = "Oficial",
                                 tag = "Inflação",
                                 corTagHex = "orange",
                                 icone = "📊",
-                                url = "https://brasilapi.com.br"
+                                url = "https://www.ibge.gov.br/indicadores.html"
                             )
                         )
                     }
@@ -146,52 +159,149 @@ object TipsApiService {
             // Prossegue
         }
 
-        // 3. Adiciona as dicas educativas essenciais do aplicativo
+        // 4. Adiciona as dicas educativas essenciais com matérias reais
         val dicasEducativas = getDicasEducativas()
 
         if (listaDicas.isEmpty()) {
-            // Se estiver totalmente offline, retorna todas as dicas educativas padrão
             return dicasEducativas
         }
 
-        // Concatena as dicas de APIs em tempo real com as dicas educativas
         listaDicas.addAll(dicasEducativas)
         return listaDicas
     }
 
     /**
-     * Dicas de educação orçamentária e planejamento pessoal (sempre disponíveis offline).
+     * Dicas de educação orçamentária e planejamento pessoal com links diretos para páginas de conteúdo.
      */
     fun getDicasEducativas(): List<Tip> {
         return listOf(
             Tip(
                 titulo = "Regra 50-30-20: como dividir seu salário",
                 resumo = "Organize sua renda entre necessidades (50%), desejos pessoais (30%) e planos para o futuro/investimentos (20%).",
-                fonte = "Educação Financeira",
-                tempo = "Guia Básico",
+                fonte = "Banco Central do Brasil",
+                tempo = "Guia Oficial",
                 tag = "Planejamento",
                 corTagHex = "emerald",
-                icone = "◒"
+                icone = "◒",
+                url = "https://www.bcb.gov.br/cidadaniafinanceira/duvidas_planejamento"
             ),
             Tip(
                 titulo = "Cuidado com o parcelamento sem juros",
                 resumo = "Parcelas pequenas comprometem o orçamento dos meses seguintes e reduzem sua margem de segurança financeira.",
-                fonte = "FinControl Dicas",
+                fonte = "Banco Central do Brasil",
                 tempo = "Alerta",
                 tag = "Orçamento",
                 corTagHex = "orange",
-                icone = "⌁"
+                icone = "⌁",
+                url = "https://www.bcb.gov.br/cidadaniafinanceira/duvidas_credito"
             ),
             Tip(
                 titulo = "Como montar sua reserva de emergência",
                 resumo = "Comece guardando o equivalente a 3 a 6 meses de gastos essenciais em aplicações com liquidez diária.",
-                fonte = "Finanças na Prática",
+                fonte = "Tesouro Direto",
                 tempo = "Essencial",
                 tag = "Segurança",
                 corTagHex = "sky",
-                icone = "◈"
+                icone = "◈",
+                url = "https://www.tesourodireto.com.br/aprenda.htm"
+            ),
+            Tip(
+                titulo = "Introdução aos Investimentos e Renda Fixa",
+                resumo = "Entenda a diferença entre Renda Fixa e Renda Variável para construir uma carteira de investimentos equilibrada.",
+                fonte = "B3 Educação",
+                tempo = "Guia Básico",
+                tag = "Investimento",
+                corTagHex = "violet",
+                icone = "📈",
+                url = "https://www.b3.com.br/pt_br/educacao/"
             )
         )
+    }
+
+    private fun carregarNoticiasRss(): List<Tip> {
+        val noticias = mutableListOf<Tip>()
+        val rssUrls = listOf(
+            "https://g1.globo.com/rss/g1/economia/",
+            "https://news.google.com/rss/search?q=economia+financas&hl=pt-BR&gl=BR&ceid=BR:pt-419"
+        )
+
+        for (rssUrl in rssUrls) {
+            try {
+                val xmlData = fazerRequisicaoHttp(rssUrl)
+                if (xmlData.isNotEmpty()) {
+                    val factory = XmlPullParserFactory.newInstance()
+                    factory.isNamespaceAware = false
+                    val parser = factory.newPullParser()
+                    parser.setInput(StringReader(xmlData))
+
+                    var eventType = parser.eventType
+                    var inItem = false
+                    var title = ""
+                    var link = ""
+                    var description = ""
+
+                    while (eventType != XmlPullParser.END_DOCUMENT) {
+                        val tagName = parser.name
+                        when (eventType) {
+                            XmlPullParser.START_TAG -> {
+                                if (tagName.equals("item", ignoreCase = true)) {
+                                    inItem = true
+                                    title = ""
+                                    link = ""
+                                    description = ""
+                                } else if (inItem) {
+                                    when (tagName.lowercase(Locale.ROOT)) {
+                                        "title" -> title = parser.nextText().trim()
+                                        "link" -> link = parser.nextText().trim()
+                                        "description" -> {
+                                            val rawDesc = parser.nextText()
+                                            description = rawDesc.replace(Regex("<[^>]*>"), "").trim()
+                                        }
+                                    }
+                                }
+                            }
+                            XmlPullParser.END_TAG -> {
+                                if (tagName.equals("item", ignoreCase = true) && inItem) {
+                                    inItem = false
+                                    if (title.isNotEmpty() && link.isNotEmpty() &&
+                                        (link.startsWith("http://", ignoreCase = true) || link.startsWith("https://", ignoreCase = true))
+                                    ) {
+                                        val resumoLimpo = if (description.length > 140) {
+                                            description.take(137) + "..."
+                                        } else if (description.isNotEmpty()) {
+                                            description
+                                        } else {
+                                            "Acesse a matéria completa para ler todos os detalhes desta notícia de economia."
+                                        }
+
+                                        val fonteMateria = if (rssUrl.contains("g1")) "G1 Economia" else "Google News Economia"
+
+                                        noticias.add(
+                                            Tip(
+                                                titulo = title,
+                                                resumo = resumoLimpo,
+                                                fonte = fonteMateria,
+                                                tempo = "Notícia Recente",
+                                                tag = "Notícia",
+                                                corTagHex = "sky",
+                                                icone = "📰",
+                                                url = link
+                                            )
+                                        )
+                                        if (noticias.size >= 5) break
+                                    }
+                                }
+                            }
+                        }
+                        eventType = parser.next()
+                    }
+                }
+            } catch (e: Exception) {
+                // Tenta a próxima fonte RSS caso ocorra erro de conexão ou parse
+            }
+            if (noticias.isNotEmpty()) break
+        }
+        return noticias
     }
 
     private fun fazerRequisicaoHttp(urlString: String): String {
@@ -202,7 +312,7 @@ object TipsApiService {
             conn.connectTimeout = TIMEOUT_MS
             conn.readTimeout = TIMEOUT_MS
             conn.setRequestProperty("User-Agent", "FinControl-Android/1.0")
-            conn.setRequestProperty("Accept", "application/json")
+            conn.setRequestProperty("Accept", "application/json, application/xml, text/xml")
 
             if (conn.responseCode == HttpURLConnection.HTTP_OK) {
                 val reader = BufferedReader(InputStreamReader(conn.inputStream, Charsets.UTF_8))
