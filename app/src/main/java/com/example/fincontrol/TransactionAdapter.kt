@@ -12,7 +12,7 @@ import com.example.fincontrol.data.model.Transacao
 import com.example.fincontrol.util.FinanceCalculator
 
 /**
- * Adaptador de RecyclerView para a lista de transações recentes do mês.
+ * Adaptador de RecyclerView para a lista de transações do mês (Gastos e Entradas/Receitas).
  *
  * Suporta clique em cada item para abrir o modal de edição de lançamentos.
  */
@@ -38,24 +38,43 @@ class TransactionAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = transactions[position]
         holder.tvDesc.text = item.descricao
-        holder.tvCategory.text = item.categoria
-        holder.tvValue.text = "−${FinanceCalculator.formatarMoeda(item.valor)}"
+        holder.tvCategory.text = if (item.isEntrada) "${item.categoria} (Entrada)" else item.categoria
 
-        // Cores e ícones de acordo com a categoria (incluindo novas categorias expandidas)
-        val (corBg, corTexto, emoji) = when (item.categoria) {
-            "Moradia" -> Triple("#E0F2FE", "#0284C7", "🏠")
-            "Alimentação" -> Triple("#FEF3C7", "#D97706", "🍽️")
-            "Lazer" -> Triple("#EDE9FE", "#7C3AED", "🍿")
-            "Fixo" -> Triple("#DBEAFE", "#2563EB", "📄")
-            "Viagem" -> Triple("#E0E7FF", "#4F46E5", "✈️")
-            "Imprevisto" -> Triple("#FFEDD5", "#EA580C", "⚠️")
-            "Saúde" -> Triple("#FEE2E2", "#DC2626", "🩺")
-            "Educação" -> Triple("#FEF9C3", "#CA8A04", "📚")
-            "Transporte" -> Triple("#E0E7FF", "#4338CA", "🚗")
-            "Investimento" -> Triple("#DCFCE7", "#15803D", "📈")
-            "Presente" -> Triple("#FCE7F3", "#BE185D", "🎁")
-            "Outros" -> Triple("#F3F4F6", "#4B5563", "📦")
-            else -> Triple("#D1FAE5", "#059669", "💰")
+        if (item.isEntrada) {
+            holder.tvValue.text = "+${FinanceCalculator.formatarMoeda(item.valor)}"
+            holder.tvValue.setTextColor(Color.parseColor("#10B981")) // Verde esmeralda
+        } else {
+            holder.tvValue.text = "−${FinanceCalculator.formatarMoeda(item.valor)}"
+            holder.tvValue.setTextColor(Color.parseColor("#EF4444")) // Vermelho suave
+        }
+
+        // Cores e ícones de acordo com a categoria e tipo
+        val (corBg, corTexto, emoji) = if (item.isEntrada) {
+            when (item.categoria) {
+                "Salário" -> Triple("#D1FAE5", "#059669", "💼")
+                "Freelance" -> Triple("#E0F2FE", "#0284C7", "💻")
+                "Investimento" -> Triple("#DCFCE7", "#15803D", "📈")
+                "Pix Recebido" -> Triple("#EDE9FE", "#7C3AED", "📱")
+                "Venda" -> Triple("#FEF3C7", "#D97706", "🏷️")
+                "Presente" -> Triple("#FCE7F3", "#BE185D", "🎁")
+                else -> Triple("#D1FAE5", "#059669", "💰")
+            }
+        } else {
+            when (item.categoria) {
+                "Moradia" -> Triple("#E0F2FE", "#0284C7", "🏠")
+                "Alimentação" -> Triple("#FEF3C7", "#D97706", "🍽️")
+                "Lazer" -> Triple("#EDE9FE", "#7C3AED", "🍿")
+                "Fixo" -> Triple("#DBEAFE", "#2563EB", "📄")
+                "Viagem" -> Triple("#E0E7FF", "#4F46E5", "✈️")
+                "Imprevisto" -> Triple("#FFEDD5", "#EA580C", "⚠️")
+                "Saúde" -> Triple("#FEE2E2", "#DC2626", "🩺")
+                "Educação" -> Triple("#FEF9C3", "#CA8A04", "📚")
+                "Transporte" -> Triple("#E0E7FF", "#4338CA", "🚗")
+                "Investimento" -> Triple("#DCFCE7", "#15803D", "📈")
+                "Presente" -> Triple("#FCE7F3", "#BE185D", "🎁")
+                "Outros" -> Triple("#F3F4F6", "#4B5563", "📦")
+                else -> Triple("#D1FAE5", "#059669", "💰")
+            }
         }
 
         val shape = GradientDrawable().apply {

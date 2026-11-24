@@ -40,6 +40,22 @@ O aplicativo oferece:
 - **Dark Mode Nativo:** Switch que alterna em tempo de execução entre o Tema Claro e o Tema Escuro através de `AppCompatDelegate.setDefaultNightMode`, respeitando paletas de cores específicas (`res/values/colors.xml` e `res/values-night/colors.xml`).
 - **Persistência das Preferências:** O modo escuro e os limites configurados são salvos no `SharedPreferences` e restaurados automaticamente na inicialização do aplicativo (`MainActivity`).
 
+### 💰 5. Suporte a Registro de Entradas (Receitas / Renda Extra)
+- **Classificação de Lançamentos:** Agora o usuário pode alternar entre registrar uma **Saída (Gasto)** ou uma **Entrada (Receita/Salário/Freelance/Pix)**.
+- **Cálculo Consolidado:** O Saldo Livre e o painel de Entradas consolidam o salário mensal mais todas as entradas extras registradas no mês no SQLite.
+- **Destaque Visual:** Lançamentos de entrada aparecem em verde esmeralda (`+R$ ...`) com ícones específicos de receita.
+
+### 📤 6. Exportação de Extrato Financeiro (Texto & Planilha CSV)
+- **Exportação Multiformato:** Botão dedicado no Dashboard permitindo exportar o extrato do mês atual ou de todo o ano.
+- **Compatibilidade com Excel e Sheets:** Gera arquivos `.csv` com codificação UTF-8 (delimitados por ponto e vírgula) compartilhados via Android `FileProvider`.
+- **Compartilhamento Rápido:** Gera resumo textual pronto para envio via WhatsApp, E-mail, Bloco de Notas ou Telegram.
+
+### 🌐 7. Conexão com APIs em Tempo Real na Aba Dicas
+- **Cotações Macroeconômicas Reais:** Conexão assíncrona (Kotlin Coroutines) com as APIs públicas gratuitas:
+  - **AwesomeAPI:** Cotações do Dólar Comercial (USD), Euro (EUR) e Bitcoin (BTC) em tempo real com recomendações financeiras.
+  - **BrasilAPI:** Indicadores oficiais da Taxa Selic e inflação oficial (IPCA).
+- **Modo Offline & Fallback:** Se o dispositivo estiver sem conexão à internet, o aplicativo exibe instantaneamente o guia de dicas educativas salvas, garantindo resiliência.
+
 ---
 
 ## 3. Estrutura e Arquitetura do Projeto
@@ -47,23 +63,26 @@ O aplicativo oferece:
 ```
 app/src/main/java/com/example/fincontrol/
 ├── data/
+│   ├── api/
+│   │   └── TipsApiService.kt             # Integração com APIs externas (AwesomeAPI & BrasilAPI)
 │   ├── db/
-│   │   └── DatabaseHelper.kt             # Persistência relacional SQLite (SQLiteOpenHelper)
+│   │   └── DatabaseHelper.kt             # Persistência relacional SQLite (v2 com suporte a tipo)
 │   ├── model/
-│   │   ├── Transacao.kt                  # Entidade de dados de lançamentos
+│   │   ├── Transacao.kt                  # Entidade de dados (Despesas e Entradas)
 │   │   ├── Simulacao.kt                  # Modelos para simulação, veredito e detalhe mensal
-│   │   └── Tip.kt                        # Modelo para os cards de dicas
+│   │   └── Tip.kt                        # Modelo para os cards de dicas e cotações
 │   ├── preferences/
 │   │   └── PreferencesManager.kt         # Persistência chave-valor (SharedPreferences)
 │   └── repository/
 │       └── FinControlRepository.kt       # Padrão Repository (Single Source of Truth)
 ├── util/
-│   └── FinanceCalculator.kt              # Funções puras de cálculo matemático e formatação
+│   ├── FinanceCalculator.kt              # Funções puras de cálculo matemático e formatação
+│   └── StatementExporter.kt              # Geração e compartilhamento de extrato (Texto e CSV)
 ├── MainActivity.kt                       # Single-Activity com Jetpack Navigation & tema
-├── DashboardFragment.kt                  # Controlador da tela Início (saldo, budget, lista)
+├── DashboardFragment.kt                  # Controlador da tela Início (saldo, budget, extrato)
 ├── SimulatorFragment.kt                  # Controlador do Simulador, Gráfico e Veredito
-├── TipsFragment.kt                       # Controlador do feed de Dicas
-├── ExpenseBottomSheet.kt                 # Modal de inserção de novo gasto
+├── TipsFragment.kt                       # Controlador do feed de Dicas com API em tempo real
+├── ExpenseBottomSheet.kt                 # Modal de inserção de novo gasto ou entrada
 ├── EditTransactionBottomSheet.kt         # Modal de edição e exclusão de transações
 ├── SettingsBottomSheet.kt                # Modal de configurações (Dark Mode e limites)
 ├── TransactionAdapter.kt                 # Adaptador RecyclerView com click listener

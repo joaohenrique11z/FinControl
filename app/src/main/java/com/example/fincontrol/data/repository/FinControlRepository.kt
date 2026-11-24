@@ -36,6 +36,9 @@ class FinControlRepository private constructor(context: Context) {
             "Fixo", "Alimentação", "Lazer", "Viagem", "Imprevisto", "Moradia",
             "Saúde", "Educação", "Transporte", "Investimento", "Presente", "Outros"
         )
+        val CATEGORIAS_ENTRADA = listOf(
+            "Salário", "Freelance", "Investimento", "Pix Recebido", "Venda", "Presente", "Outros"
+        )
     }
 
     // Configurações do Usuário
@@ -65,8 +68,20 @@ class FinControlRepository private constructor(context: Context) {
         return dbHelper.listarPorMes(mes)
     }
 
+    fun listarTodasTransacoes(): List<Transacao> {
+        return dbHelper.listarTodasTransacoes()
+    }
+
     fun calcularGastoDoMes(mes: Int = mesAtual): Double {
         return dbHelper.calcularTotalPorMes(mes)
+    }
+
+    fun calcularTotalEntradasExtras(mes: Int = mesAtual): Double {
+        return dbHelper.calcularTotalEntradasPorMes(mes)
+    }
+
+    fun calcularTotalEntradasConsolidadas(mes: Int = mesAtual): Double {
+        return salario + calcularTotalEntradasExtras(mes)
     }
 
     fun calcularGastosDeTodosOsMeses(): List<Double> {
@@ -75,12 +90,6 @@ class FinControlRepository private constructor(context: Context) {
 
     /**
      * Registra um gasto (à vista ou parcelado).
-     *
-     * Se parcelas > 1, divide o valor em centavos entre os meses subsequentes,
-     * exatamente como implementado na função salvarGasto() do JavaScript original:
-     * - Exemplo: R$ 100,00 em 3x -> R$ 33,34 (1/3), R$ 33,33 (2/3), R$ 33,33 (3/3).
-     *
-     * Retorna a quantidade de parcelas registradas com sucesso.
      */
     fun registrarGasto(
         descricao: String,
@@ -97,7 +106,7 @@ class FinControlRepository private constructor(context: Context) {
         var registrosSalvos = 0
         for (i in 0 until parcelasEfetivas) {
             val mesAlvo = mesInicial + i
-            if (mesAlvo >= NOMES_MESES.size) break // Limite de 6 meses
+            if (mesAlvo >= NOMES_MESES.size) break
 
             val centavos = parcelaBase + if (i < resto) 1 else 0
             val valorParcela = centavos / 100.0
@@ -111,12 +120,32 @@ class FinControlRepository private constructor(context: Context) {
                 descricao = descricaoFormatada,
                 categoria = categoria,
                 valor = valorParcela,
-                mes = mesAlvo
+                mes = mesAlvo,
+                tipo = Transacao.TIPO_DESPESA
             )
             dbHelper.inserirTransacao(transacao)
             registrosSalvos++
         }
         return registrosSalvos
+    }
+
+    /**
+     * Registra uma entrada (receita) avulsa ou pontual no mês selecionado.
+     */
+    fun registrarEntrada(
+        descricao: String,
+        categoria: String,
+        valor: Double,
+        mes: Int
+    ): Long {
+        val transacao = Transacao(
+            descricao = descricao,
+            categoria = categoria,
+            valor = valor,
+            mes = mes,
+            tipo = Transacao.TIPO_ENTRADA
+        )
+        return dbHelper.inserirTransacao(transacao)
     }
 
     fun obterTransacaoPorId(id: Long): Transacao? {

@@ -1,15 +1,16 @@
 package com.example.fincontrol.data.model
 
 /**
- * Modelo de dados representando um lançamento financeiro (Gasto).
+ * Modelo de dados representando um lançamento financeiro (Gasto ou Entrada/Receita).
  *
- * Mapeia fielmente os campos utilizados no protótipo web original (index.html):
+ * Mapeia fielmente os campos utilizados na aplicação:
  * - id: Identificador único da transação
- * - descricao: Nome/descrição do gasto (ex: "Aluguel", "Supermercado")
- * - categoria: Categoria do gasto ("Moradia", "Alimentação", "Lazer", "Fixo", "Viagem", "Imprevisto")
+ * - descricao: Nome/descrição do lançamento (ex: "Aluguel", "Freelance")
+ * - categoria: Categoria ("Moradia", "Alimentação", "Salário", "Freelance", etc.)
  * - valor: Valor monetário em reais (ex: 700.00)
- * - mes: Índice do mês do lançamento (0 = Jan, 1 = Fev, 2 = Mar, 3 = Abr, 4 = Mai, 5 = Jun)
+ * - mes: Índice do mês do lançamento (0 = Jan ... 11 = Dez)
  * - dataCriacao: Timestamp da data de registro
+ * - tipo: Natureza do lançamento ("DESPESA" ou "ENTRADA")
  */
 data class Transacao(
     val id: Long = 0,
@@ -17,5 +18,13 @@ data class Transacao(
     val categoria: String,
     val valor: Double,
     val mes: Int,
-    val dataCriacao: Long = System.currentTimeMillis()
-)
+    val dataCriacao: Long = System.currentTimeMillis(),
+    val tipo: String = TIPO_DESPESA
+) {
+    companion object {
+        const val TIPO_DESPESA = "DESPESA"
+        const val TIPO_ENTRADA = "ENTRADA"
+    }
+
+    val isEntrada: Boolean get() = tipo.equals(TIPO_ENTRADA, ignoreCase = true)
+}

@@ -18,7 +18,7 @@ import com.google.android.material.chip.ChipGroup
 import com.google.android.material.textfield.TextInputEditText
 
 /**
- * BottomSheetDialog para Edição e Exclusão de uma Transação existente.
+ * BottomSheetDialog para Edição e Exclusão de uma Transação existente (Gasto ou Entrada).
  *
  * Permite alterar descrição, valor, categoria e mês do lançamento,
  * persistindo as modificações diretamente no banco SQLite local.
@@ -68,6 +68,7 @@ class EditTransactionBottomSheet : BottomSheetDialogFragment() {
             return
         }
 
+        val tvPreTitle = view.findViewById<TextView>(R.id.tv_edit_pre_title)
         val etValue = view.findViewById<TextInputEditText>(R.id.edit_expense_value)
         val etDesc = view.findViewById<TextInputEditText>(R.id.edit_expense_description)
         val chipGroupCategory = view.findViewById<ChipGroup>(R.id.edit_chip_group_category)
@@ -75,6 +76,8 @@ class EditTransactionBottomSheet : BottomSheetDialogFragment() {
         val tvError = view.findViewById<TextView>(R.id.tv_edit_expense_error)
         val btnUpdate = view.findViewById<Button>(R.id.btn_update_expense)
         val btnDelete = view.findViewById<Button>(R.id.btn_delete_expense)
+
+        tvPreTitle.text = if (transacao.isEntrada) "EDITAR ENTRADA (RECEITA)" else "EDITAR GASTO (DESPESA)"
 
         // Preenche campos com dados existentes
         etValue.setText(String.format(java.util.Locale.US, "%.2f", transacao.valor).replace(".", ","))

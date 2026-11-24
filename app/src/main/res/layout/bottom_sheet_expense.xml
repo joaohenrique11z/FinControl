@@ -22,6 +22,7 @@
 
     <!-- Título do Sheet -->
     <TextView
+        android:id="@+id/tv_sheet_pre_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-black"
@@ -31,12 +32,44 @@
         android:letterSpacing="0.1" />
 
     <TextView
+        android:id="@+id/tv_sheet_title"
         style="@style/TextAppearance.FinControl.Title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="12dp"
         android:text="Gasto rápido" />
+
+    <!-- Seletor Tipo: Saída (Gasto) vs Entrada (Receita) -->
+    <com.google.android.material.button.MaterialButtonToggleGroup
+        android:id="@+id/toggle_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="14dp"
+        app:checkedButton="@id/btn_toggle_expense"
+        app:selectionRequired="true"
+        app:singleSelection="true">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_toggle_expense"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="▼ Saída (Gasto)"
+            android:textColor="@color/colorExpense"
+            android:textSize="12sp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_toggle_income"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="▲ Entrada (Receita)"
+            android:textColor="@color/colorIncome"
+            android:textSize="12sp" />
+    </com.google.android.material.button.MaterialButtonToggleGroup>
 
     <!-- Campo Valor -->
     <com.google.android.material.textfield.TextInputLayout
@@ -74,8 +107,9 @@
             tools:text="Supermercado mensal" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Categoria (Opções Expandidas) -->
+    <!-- Categoria -->
     <TextView
+        android:id="@+id/tv_category_label"
         style="@style/TextAppearance.FinControl.Label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -103,6 +137,34 @@
                 android:layout_height="wrap_content"
                 android:checked="true"
                 android:text="Fixo" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_salario"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Salário" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_freelance"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Freelance" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_pix"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pix Recebido" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chip_cat_venda"
+                style="@style/Widget.FinControl.Chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Venda" />
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_cat_alimentacao"
@@ -183,108 +245,116 @@
         </com.google.android.material.chip.ChipGroup>
     </HorizontalScrollView>
 
-    <!-- Parcelas (Opções Expandidas: 1x a 24x) -->
-    <TextView
-        style="@style/TextAppearance.FinControl.Label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Parcelas" />
-
-    <HorizontalScrollView
+    <!-- Container Parcelamento (Visível apenas para Saídas) -->
+    <LinearLayout
+        android:id="@+id/container_installments"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:scrollbars="none">
+        android:orientation="vertical">
 
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chip_group_installments"
+        <TextView
+            style="@style/TextAppearance.FinControl.Label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:selectionRequired="true"
-            app:singleLine="true"
-            app:singleSelection="true">
+            android:layout_marginBottom="8dp"
+            android:text="Parcelas" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_parc_1"
-                style="@style/Widget.FinControl.Chip"
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:scrollbars="none">
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chip_group_installments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="1x · à vista" />
+                app:selectionRequired="true"
+                app:singleLine="true"
+                app:singleSelection="true">
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_parc_2"
-                style="@style/Widget.FinControl.Chip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="2x" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_parc_1"
+                    style="@style/Widget.FinControl.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="true"
+                    android:text="1x · à vista" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_parc_3"
-                style="@style/Widget.FinControl.Chip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3x" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_parc_2"
+                    style="@style/Widget.FinControl.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2x" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_parc_4"
-                style="@style/Widget.FinControl.Chip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="4x" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_parc_3"
+                    style="@style/Widget.FinControl.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3x" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_parc_5"
-                style="@style/Widget.FinControl.Chip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5x" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_parc_4"
+                    style="@style/Widget.FinControl.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4x" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_parc_6"
-                style="@style/Widget.FinControl.Chip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="6x" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_parc_5"
+                    style="@style/Widget.FinControl.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5x" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_parc_10"
-                style="@style/Widget.FinControl.Chip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="10x" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_parc_6"
+                    style="@style/Widget.FinControl.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="6x" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_parc_12"
-                style="@style/Widget.FinControl.Chip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="12x" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_parc_10"
+                    style="@style/Widget.FinControl.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="10x" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_parc_18"
-                style="@style/Widget.FinControl.Chip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="18x" />
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_parc_12"
+                    style="@style/Widget.FinControl.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="12x" />
 
-            <com.google.android.material.chip.Chip
-                android:id="@+id/chip_parc_24"
-                style="@style/Widget.FinControl.Chip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="24x" />
-        </com.google.android.material.chip.ChipGroup>
-    </HorizontalScrollView>
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_parc_18"
+                    style="@style/Widget.FinControl.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="18x" />
 
-    <!-- Mês Inicial (12 meses do ano) -->
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_parc_24"
+                    style="@style/Widget.FinControl.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="24x" />
+            </com.google.android.material.chip.ChipGroup>
+        </HorizontalScrollView>
+    </LinearLayout>
+
+    <!-- Mês do lançamento -->
     <TextView
+        android:id="@+id/tv_month_label"
         style="@style/TextAppearance.FinControl.Label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Mês inicial do lançamento" />
+        android:text="Mês de incidência" />
 
     <Spinner
         android:id="@+id/spinner_expense_month"

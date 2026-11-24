@@ -1,74 +1,105 @@
 package com.example.fincontrol
 
+import android.app.AlertDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Button
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.fincontrol.data.api.TipsApiService
 import com.example.fincontrol.data.model.Tip
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 /**
- * Fragmento de Dicas Financeiras e Educação Orçamentária.
+ * Fragmento de Dicas Financeiras e Cotações em Tempo Real.
  *
- * Apresenta o feed com os 5 artigos e notícias idênticos ao protótipo web original.
+ * Conectado a APIs externas de economia (AwesomeAPI e BrasilAPI) para trazer
+ * taxas oficiais (Selic, IPCA) e cotações cambiais (Dólar, Euro, Bitcoin),
+ * com fallback imediato para as dicas educativas recomendadas.
  */
 class TipsFragment : Fragment(R.layout.fragment_tips) {
+
+    private lateinit var adapter: TipAdapter
+    private lateinit var tvApiStatus: TextView
+    private lateinit var progressLoading: ProgressBar
+    private lateinit var btnRefresh: Button
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val rvTips = view.findViewById<RecyclerView>(R.id.rv_tips)
+        tvApiStatus = view.findViewById(R.id.tv_api_status)
+        progressLoading = view.findViewById(R.id.progress_tips_loading)
+        btnRefresh = view.findViewById(R.id.btn_refresh_tips)
 
-        // Conteúdo fiel ao protótipo web original
-        val dicas = listOf(
-            Tip(
-                titulo = "Regra 50-30-20: como dividir seu salário",
-                resumo = "Organize sua renda entre necessidades, desejos e planos para o futuro.",
-                fonte = "Vida Financeira",
-                tempo = "há 2 horas",
-                tag = "Dica",
-                corTagHex = "emerald",
-                icone = "◒"
-            ),
-            Tip(
-                titulo = "Cuidado com o parcelamento sem juros",
-                resumo = "Parcelas pequenas também ocupam espaço no orçamento dos próximos meses.",
-                fonte = "Seu Dinheiro",
-                tempo = "há 5 horas",
-                tag = "Atenção",
-                corTagHex = "orange",
-                icone = "⌁"
-            ),
-            Tip(
-                titulo = "Como montar sua reserva de emergência",
-                resumo = "Comece aos poucos e priorize um valor que possa resgatar quando precisar.",
-                fonte = "Finanças na Prática",
-                tempo = "ontem",
-                tag = "Dica",
-                corTagHex = "sky",
-                icone = "◈"
-            ),
-            Tip(
-                titulo = "Selic: o que muda no seu bolso",
-                resumo = "A taxa básica influencia o crédito, os investimentos e o custo de vida.",
-                fonte = "Radar Econômico",
-                tempo = "ontem",
-                tag = "Notícia",
-                corTagHex = "violet",
-                icone = "↗"
-            ),
-            Tip(
-                titulo = "Dólar hoje: dicas para compras internacionais",
-                resumo = "Considere IOF, conversão e tarifas antes de fechar a compra.",
-                fonte = "Bolso Consciente",
-                tempo = "há 2 dias",
-                tag = "Investimentos",
-                corTagHex = "amber",
-                icone = "$"
-            )
-        )
+        // Configuração inicial com dicas educativas para renderização instantânea
+        val dicasIniciais = TipsApiService.getDicasEducativas()
+        adapter = TipAdapter(dicasIniciais)
+        adapter.onTipClickListener = { tip ->
+            abrirDetalhesOuLink(tip)
+        }
 
         rvTips.layoutManager = LinearLayoutManager(requireContext())
-        rvTips.adapter = TipAdapter(dicas)
+        rvTips.adapter = adapter
+
+        btnRefresh.setOnClickListener {
+            buscarDicasDaApi()
+        }
+
+        // Busca dados atualizados da API em segundo plano
+        buscarDicasDaApi()
+    }
+
+    private fun buscarDicasDaApi() {
+        progressLoading.visibility = View.VISIBLE
+        tvApiStatus.text = "● Atualizando dados das APIs..."
+
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+            val dicas = try {
+                TipsApiService.carregarDicasComApi()
+            } catch (e: Exception) {
+                TipsApiService.getDicasEducativas()
+            }
+
+            withContext(Dispatchers.Main) {
+                if (!isAdded) return@withContext
+
+                adapter.atualizarDicas(dicas)
+                progressLoading.visibility = View.GONE
+
+                val temApi = dicas.any { it.url != null }
+                if (temApi) {
+                    tvApiStatus.text = "● Conectado: Cotações & Taxas em Tempo Real"
+                } else {
+                    tvApiStatus.text = "● Modo Offline: Exibindo dicas salvas"
+                }
+            }
+        }
+    }
+
+    private fun abrirDetalhesOuLink(tip: Tip) {
+        if (!tip.url.isNullOrEmpty()) {
+            try {
+                val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(tip.url))
+                startActivity(browserIntent)
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Não foi possível abrir o link externo.", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            AlertDialog.Builder(requireContext())
+                .setTitle(tip.titulo)
+                .setMessage("${tip.resumo}\n\nFonte: ${tip.fonte} (${tip.tempo})")
+                .setPositiveButton("Entendi", null)
+                .show()
+        }
     }
 }

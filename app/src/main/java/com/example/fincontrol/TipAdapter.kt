@@ -11,10 +11,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fincontrol.data.model.Tip
 
 /**
- * Adaptador para o feed de Dicas Financeiras.
+ * Adaptador para o feed de Dicas Financeiras e Cotações em Tempo Real.
  */
-class TipAdapter(private val tips: List<Tip>) :
-    RecyclerView.Adapter<TipAdapter.ViewHolder>() {
+class TipAdapter(
+    private var tips: List<Tip>,
+    var onTipClickListener: ((Tip) -> Unit)? = null
+) : RecyclerView.Adapter<TipAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val containerIcon: FrameLayout = view.findViewById(R.id.container_tip_icon)
@@ -64,7 +66,16 @@ class TipAdapter(private val tips: List<Tip>) :
         }
         holder.tvTag.background = tagShape
         holder.tvTag.setTextColor(Color.parseColor(corTexto))
+
+        holder.itemView.setOnClickListener {
+            onTipClickListener?.invoke(tip)
+        }
     }
 
     override fun getItemCount() = tips.size
+
+    fun atualizarDicas(novasDicas: List<Tip>) {
+        this.tips = novasDicas
+        notifyDataSetChanged()
+    }
 }

@@ -2,6 +2,7 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBackground"
@@ -16,30 +17,69 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif-bold"
-        android:text="CONTEÚDO PARA VOCÊ"
+        android:text="CONTEÚDO E MERCADO"
         android:textColor="@color/primaryColor"
         android:textSize="10sp"
         android:letterSpacing="0.1" />
 
-    <TextView
-        style="@style/TextAppearance.FinControl.Title"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:text="Dicas financeiras"
-        android:textSize="22sp" />
+        android:layout_marginTop="2dp">
 
-    <TextView
-        android:layout_width="wrap_content"
+        <TextView
+            style="@style/TextAppearance.FinControl.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="Dicas &amp; Cotações"
+            android:textSize="22sp" />
+
+        <!-- Botão Atualizar Dados da API -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_refresh_tips"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:text="🔄 Atualizar"
+            android:textColor="@color/primaryColor"
+            android:textSize="11sp" />
+    </RelativeLayout>
+
+    <!-- Barra de Status da Conexão com API -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="sans-serif"
-        android:text="Ideias simples para cuidar melhor do seu dinheiro"
-        android:textColor="@color/colorTextSecondary"
-        android:textSize="12sp" />
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <!-- Feed de Dicas -->
+        <TextView
+            android:id="@+id/tv_api_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-medium"
+            android:text="● Conectando às APIs em tempo real..."
+            android:textColor="@color/primaryColor"
+            android:textSize="11sp"
+            tools:text="● Cotações em tempo real via API" />
+
+        <ProgressBar
+            android:id="@+id/progress_tips_loading"
+            style="?android:attr/progressBarStyleSmall"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <!-- Feed de Dicas e Cotações -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_tips"
         android:layout_width="match_parent"
